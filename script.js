@@ -1,5 +1,5 @@
 function randomMove() {
-    let randomNumber = Math.random() * 10 % 3
+    let randomNumber = Math.floor(Math.random() * 10) % 3
     switch (randomNumber) {
         case 0:
             return "Rock"
