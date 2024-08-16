@@ -9,3 +9,7 @@ function randomMove() {
             return "Scissors"
     }
 }
+
+function getHumanChoice() {
+    return prompt("Please choose a move :")
+}
