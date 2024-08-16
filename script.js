@@ -18,22 +18,39 @@ function getHumanChoice() {
 }
 
 function playRound(computerChoice, humanChoice) {
+    //This function return -1 if computer wins, 0 if ex-aequo, 1 if human wins
     switch (humanChoice) {
         case "rock":
-            if (computerChoice == "rock") return "Ex-aequo"
-            else if (computerChoice == "scissors") return `You Win ${humanChoice} beats ${computerChoice}!`
-            else return `You Lose ${computerChoice} beats ${humanChoice}!`
+            if (computerChoice == "rock") return 0
+            else if (computerChoice == "scissors") return 1
+            else return -1
         case "scissors":
-            if (computerChoice == "scissors") return "Ex-aequo"
-            else if (computerChoice == "paper") return `You Win ${humanChoice} beats ${computerChoice}!`
-            else return `You Lose ${computerChoice} beats ${humanChoice}!`
+            if (computerChoice == "scissors") return 0
+            else if (computerChoice == "paper") return 1
+            else return -1
         case "paper":
-            if (computerChoice == "paper") return "Ex-aequo"
-            else if (computerChoice == "rock") return `You Win ${humanChoice} beats ${computerChoice}!`
-            else return `You Lose ${computerChoice} beats ${humanChoice}!`
-        default:
-            return "Please enter a valid move"
+            if (computerChoice == "paper") return 0
+            else if (computerChoice == "rock") return 1
+            else return -1
     }
 }
 
-console.log(playRound(randomMove(), getHumanChoice()))
+function playGame(numberOfRounds) {
+    for (let i = 0; i < numberOfRounds; i++) {
+        let computerChoice = randomMove()
+        let humanChoice = getHumanChoice()
+        let result = playRound(computerChoice, humanChoice)
+
+        if (result < 0) {
+            console.log(`You Lose ${computerChoice} beats ${humanChoice}!`)
+            computerScore++
+        } else if (result > 0) {
+            console.log(`You Win ${humanChoice} beats ${computerChoice}!`)
+            humanScore++
+        } else {
+            console.log("Ex-aequo")
+        }
+    }
+
+    console.log(`The final score is Human ${humanScore} - ${computerScore} Computer`)
+}
