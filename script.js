@@ -1,3 +1,8 @@
+const rockBtn = document.querySelector("button.rock");
+const paperBtn = document.querySelector("button.paper");
+const scissorsBtn = document.querySelector("button.scissors");
+const scoreDiv = document.querySelector(".score");
+
 let humanScore = 0
 let computerScore = 0
 
@@ -13,44 +18,58 @@ function randomMove() {
     }
 }
 
-function getHumanChoice() {
-    return prompt("Please choose a move :").toLowerCase()
-}
-
 function playRound(computerChoice, humanChoice) {
     //This function return -1 if computer wins, 0 if ex-aequo, 1 if human wins
     switch (humanChoice) {
         case "rock":
-            if (computerChoice == "rock") return 0
-            else if (computerChoice == "scissors") return 1
-            else return -1
+            if (computerChoice === "paper") computerScore += 1;
+            else if (computerChoice === "scissors") humanScore += 1;
+            break;
+
         case "scissors":
-            if (computerChoice == "scissors") return 0
-            else if (computerChoice == "paper") return 1
-            else return -1
+            if (computerChoice === "scissors") computerScore += 1;
+            else if (computerChoice === "rock") humanScore += 1;
+            break;
+
         case "paper":
-            if (computerChoice == "paper") return 0
-            else if (computerChoice == "rock") return 1
-            else return -1
+            if (computerChoice === "rock") computerScore += 1;
+            else if (computerChoice === "paper") humanScore += 1;
+            break;
+    }
+
+    updateScoreDiv();
+}
+
+rockBtn.addEventListener("click", () => {
+    const computerChoice = randomMove();
+    playRound(computerChoice, "rock");
+})
+
+paperBtn.addEventListener("click", () => {
+    const computerChoice = randomMove();
+    playRound(computerChoice, "paper");
+})
+
+scissorsBtn.addEventListener("click", () => {
+    const computerChoice = randomMove();
+    playRound(computerChoice, "scissors");
+})
+
+function updateScoreDiv() {
+    scoreDiv.textContent = `You ${humanScore} - ${computerScore} Computer`;
+
+    if (computerScore === 5) {
+        alert("Computer won!");
+        resetGame();
+    }
+    if (humanScore === 5) {
+        alert("You won!");
+        resetGame();
     }
 }
 
-function playGame(numberOfRounds) {
-    for (let i = 0; i < numberOfRounds; i++) {
-        let computerChoice = randomMove()
-        let humanChoice = getHumanChoice()
-        let result = playRound(computerChoice, humanChoice)
-
-        if (result < 0) {
-            console.log(`You Lose ${computerChoice} beats ${humanChoice}!`)
-            computerScore++
-        } else if (result > 0) {
-            console.log(`You Win ${humanChoice} beats ${computerChoice}!`)
-            humanScore++
-        } else {
-            console.log("Ex-aequo")
-        }
-    }
-
-    console.log(`The final score is Human ${humanScore} - ${computerScore} Computer`)
+function resetGame() {
+    computerScore = 0;
+    humanScore = 0;
+    updateScoreDiv();
 }
